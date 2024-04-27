@@ -1,0 +1,26 @@
+#version 100
+#ifdef GL_ES
+precision mediump float;
+#endif
+
+varying vec2 v_texcoord;
+uniform sampler2D tex;
+uniform sampler2D paletteTexture;
+uniform float time;
+uniform float width;
+uniform float height;
+uniform int paletteIndex;
+
+vec3 cosPalette(  float t,  vec3 a,  vec3 b,  vec3 c, vec3 d ){
+    return a + b*cos( 6.28318*(c*t+d) );
+}
+
+void main () {
+	
+	float palette_index = texture2D(paletteTexture, v_texcoord).r;
+	vec2 palette_lookup = vec2(palette_index, 0.5);
+//       gl_FragColor = texture2D(paletteTexture, palette_lookup);
+
+	gl_FragColor = vec4(cosPalette(vUv.x, uAColor, uBColor, uCColor, uDColor ), 1.0 );
+}
+
